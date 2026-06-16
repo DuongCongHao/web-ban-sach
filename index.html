@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tiệm Sách Online</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="header">
+    <div class="header-container">
+        <div class="logo">Bán Sách Online</div>
+        
+        <nav class="navbar"> 
+            <ul class="nav-list">
+                <li><a href="" class="active">Trang chủ</a></li>
+                <li><a href="#the-loai">Thể loại</a></li>
+                <li><a href="#sach-moi">Sách mới tuyển chọn</a></li>
+                <li><a href="#khuyen-mai" class="menu-sale">Khuyến mãi %</a></li>
+                <li><a href="dangnhap.html">Đăng nhập</a></li>
+                <li><a href="dangky.html" class="btn-register">Đăng ký</a></li>
+                
+                <li class="cart-icon-container" id="cart-target">
+                    <a href="giohang.html">🛒 Giỏ hàng <span id="cart-count" class="cart-badge">0</span></a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<section class="section">
+    <h2 class="section-title">Sách HOT</h2>
+    
+    <div class="products">
+        <div class="product-card">
+            <div class="product-image">
+                <img src="images/sach1.jpg" alt="Sách 1" class="book-img-src">
+            </div>
+            <div class="product-info">
+                <h3>Sách văn học thế giới 1</h3>
+                <p class="price">Giá: <span>150.000 VND</span></p>
+                <div class="product-actions">
+                    <a href="muangay.html" class="btn-buy">Mua ngay</a>
+                    <button class="btn-add-cart" onclick="themVaoGioHang(this)"><i class="fas fa-shopping-cart"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <div class="product-image">
+                <img src="images/sach2.jpg" alt="Sách 2" class="book-img-src">
+            </div>
+            <div class="product-info">
+                <h3>Kỹ năng sống nâng tầm</h3>
+                <p class="price">Giá: <span>100.000 VND</span></p>
+                <div class="product-actions">
+                    <a href="muangay.html" class="btn-buy">Mua ngay</a>
+                    <button class="btn-add-cart" onclick="themVaoGioHang(this)"><i class="fas fa-shopping-cart"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <div class="product-image">
+                <img src="images/sach3.jpg" alt="Sách 3" class="book-img-src">
+            </div>
+            <div class="product-info">
+                <h3>Tư duy kinh tế hiện đại</h3>
+                <p class="price">Giá: <span>175.000 VND</span></p>
+                <div class="product-actions">
+                    <a href="muangay.html" class="btn-buy">Mua ngay</a>
+                    <button class="btn-add-cart" onclick="themVaoGioHang(this)"><i class="fas fa-shopping-cart"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <div class="product-image">
+                <img src="images/sach4.jpg" alt="Sách 4" class="book-img-src">
+            </div>
+            <div class="product-info">
+                <h3>Bí mật của hạnh phúc</h3>
+                <p class="price">Giá: <span>200.000 VND</span></p>
+                <div class="product-actions">
+                    <a href="muangay.html" class="btn-buy">Mua ngay</a>
+                    <button class="btn-add-cart" onclick="themVaoGioHang(this)"><i class="fas fa-shopping-cart"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <div class="product-image">
+                <img src="images/sach5.jpg" alt="Sách 5" class="book-img-src">
+            </div>
+            <div class="product-info">
+                <h3>Tiểu thuyết trinh thám kỳ bí</h3>
+                <p class="price">Giá: <span>135.000 VND</span></p>
+                <div class="product-actions">
+                    <a href="muangay.html" class="btn-buy">Mua ngay</a>
+                    <button class="btn-add-cart" onclick="themVaoGioHang(this)"><i class="fas fa-shopping-cart"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <div class="product-image">
+                <img src="images/sach6.jpg" alt="Sách 6" class="book-img-src">
+            </div>
+            <div class="product-info">
+                <h3>Lịch sử và những góc khuất</h3>
+                <p class="price">Giá: <span>160.000 VND</span></p>
+                <div class="product-actions">
+                    <a href="muangay.html" class="btn-buy">Mua ngay</a>
+                    <button class="btn-add-cart" onclick="themVaoGioHang(this)"><i class="fas fa-shopping-cart"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <div class="product-image">
+                <img src="images/sach7.jpg" alt="Sách 7" class="book-img-src">
+            </div>
+            <div class="product-info">
+                <h3>Nghệ thuật giao tiếp đỉnh cao</h3>
+                <p class="price">Giá: <span>95.000 VND</span></p>
+                <div class="product-actions">
+                    <a href="muangay.html" class="btn-buy">Mua ngay</a>
+                    <button class="btn-add-cart" onclick="themVaoGioHang(this)"><i class="fas fa-shopping-cart"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <div class="product-image">
+                <img src="images/sach8.jpg" alt="Sách 8" class="book-img-src">
+            </div>
+            <div class="product-info">
+                <h3>Thơ và những khoảng lặng</h3>
+                <p class="price">Giá: <span>80.000 VND</span></p>
+                <div class="product-actions">
+                    <a href="muangay.html" class="btn-buy">Mua ngay</a>
+                    <button class="btn-add-cart" onclick="themVaoGioHang(this)"><i class="fas fa-shopping-cart"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <div class="product-image">
+                <img src="images/sach9.jpg" alt="Sách 9" class="book-img-src">
+            </div>
+            <div class="product-info">
+                <h3>Hạt giống tâm hồn toàn tập</h3>
+                <p class="price">Giá: <span>125.000 VND</span></p>
+                <div class="product-actions">
+                    <a href="muangay.html" class="btn-buy">Mua ngay</a>
+                    <button class="btn-add-cart" onclick="themVaoGioHang(this)"><i class="fas fa-shopping-cart"></i></button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<script>
+    // Hàm cập nhật số lượng hiển thị trên Menu khi vừa tải trang
+    function capNhatBadgeGioHang() {
+        let gioHang = JSON.parse(localStorage.getItem('gioHang')) || [];
+        // Tính tổng số lượng tất cả các cuốn trong giỏ
+        let tongSoLuong = gioHang.reduce((total, item) => total + item.soLuong, 0);
+        document.getElementById("cart-count").innerText = tongSoLuong;
+    }
+
+    function themVaoGioHang(buttonElement) {
+        const productCard = buttonElement.closest('.product-card');
+        const imgToFly = productCard.querySelector('.book-img-src');
+        const h3Title = productCard.querySelector('.product-info h3').innerText;
+        // Lấy giá tiền và chuyển thành số (Ví dụ: "150.000 VND" -> 150000)
+        const priceText = productCard.querySelector('.price span').innerText;
+        const giaTien = parseInt(priceText.replace(/\./g, '').replace(' VND', ''));
+
+        const cartTarget = document.getElementById('cart-target');
+        const imgPos = imgToFly.getBoundingClientRect();
+        const cartPos = cartTarget.getBoundingClientRect();
+
+        // Hiệu ứng bay (Giữ nguyên phần xử lý giao diện cực mượt trước đó)
+        const cloneImg = imgToFly.cloneNode();
+        cloneImg.style.position = 'fixed';
+        cloneImg.style.left = `${imgPos.left}px`;
+        cloneImg.style.top = `${imgPos.top}px`;
+        cloneImg.style.width = `${imgPos.width}px`;
+        cloneImg.style.height = `${imgPos.height}px`;
+        cloneImg.style.opacity = '0.8';
+        cloneImg.style.zIndex = '1000';
+        cloneImg.style.transition = 'all 0.8s cubic-bezier(0.42, 0, 0.58, 1)';
+        document.body.appendChild(cloneImg);
+
+        setTimeout(() => {
+            cloneImg.style.left = `${cartPos.left + 10}px`;
+            cloneImg.style.top = `${cartPos.top + 5}px`;
+            cloneImg.style.width = '20px';
+            cloneImg.style.height = '30px';
+            cloneImg.style.opacity = '0.2';
+        }, 10);
+
+        setTimeout(() => {
+            cloneImg.remove();
+
+            // --- ĐOẠN LƯU VÀO LOCALSTORAGE ---
+            let gioHang = JSON.parse(localStorage.getItem('gioHang')) || [];
+            
+            // Kiểm tra xem cuốn sách này đã có trong giỏ chưa
+            let trungSanPham = gioHang.find(item => item.ten === h3Title);
+            if (trungSanPham) {
+                trungSanPham.soLuong += 1; // Có rồi thì tăng số lượng
+            } else {
+                // Chưa có thì thêm mới vào mảng kèm theo ảnh để sang trang giỏ hàng hiển thị
+                gioHang.push({
+                    ten: h3Title,
+                    gia: giaTien,
+                    anh: imgToFly.getAttribute('src'),
+                    soLuong: 1
+                });
+            }
+            
+            // Lưu mảng giỏ hàng mới lại vào trình duyệt
+            localStorage.setItem('gioHang', JSON.stringify(gioHang));
+
+            // Cập nhật lại số lượng trên Menu
+            capNhatBadgeGioHang();
+            
+            cartTarget.style.transform = 'scale(1.2)';
+            setTimeout(() => { cartTarget.style.transform = 'scale(1)'; }, 200);
+        }, 800);
+    }
+
+    // Chạy ngay khi tải trang chủ để giữ số lượng giỏ hàng cũ nếu có
+    window.onload = capNhatBadgeGioHang;
+</script>
+
+</body>
+</html>

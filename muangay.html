@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thanh Toán Đơn Hàng</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="dark-theme">
+
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">BookStore</div>
+            <nav class="navbar">
+                <ul class="nav-list">
+                    <li><a href="index.html">Trang chủ</a></li>
+                    <li><a href="index.html#the-loai">Thể loại</a></li>
+                    <li><a href="index.html#sach-moi">Sách mới tuyển chọn</a></li>
+                    <li><a href="index.html#khuyen-mai" class="menu-sale">Khuyến mãi %</a></li>
+                    <li><a href="dangnhap.html">Đăng nhập</a></li>
+                    <li><a href="dangky.html" class="btn-register">Đăng ký</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="checkout-container">
+        <form id="checkout-form" onsubmit="xacNhanThanhToan(event)" class="checkout-grid">
+
+            <div class="checkout-left-column">
+
+                <div class="checkout-box product-detail-section" style="margin-bottom: 25px;">
+                    <h2><i class="fas fa-book"></i> Thông tin sản phẩm</h2>
+                    <div class="checkout-product">
+                        <div class="checkout-image">
+                            <img src="images/sach1.jpg" alt="Sách Đã Chọn">
+                        </div>
+                        <div class="checkout-info">
+                            <h3>Sách văn học thế giới 1</h3>
+                            <p class="single-price">Đơn giá: <span id="unit-price">150000</span> VND</p>
+                            <div class="quantity-selector">
+                                <label for="quantity">Số lượng:</label>
+                                <input type="number" id="quantity" value="1" min="1" max="99" oninput="tinhToanTien()">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="checkout-box customer-info-section">
+                    <h2><i class="fas fa-user-edit"></i> Thông tin giao hàng</h2>
+
+                    <div class="input-field">
+                        <label for="fullname">Họ và tên <span class="required">*</span></label>
+                        <input type="text" id="fullname" placeholder="Ví dụ: Nguyễn Văn A" required>
+                    </div>
+
+                    <div class="input-field">
+                        <label for="phone">Số điện thoại <span class="required">*</span></label>
+                        <input type="tel" id="phone" placeholder="Ví dụ: 0912345678" pattern="[0-9]{10}"
+                            title="Vui lòng nhập đúng số điện thoại 10 chữ số" required>
+                    </div>
+
+                    <div class="input-field" style="position: relative;">
+                        <label for="address">Địa chỉ nhận hàng (Tìm kiếm vị trí) <span class="required">*</span></label>
+                        <input type="text" id="address" placeholder="Nhập tên đường, thành phố để tìm kiếm..."
+                            oninput="timDiaChiGoiY()" autocomplete="off" required>
+                        <div id="address-suggestions" class="suggestions-box"></div>
+                    </div>
+
+                    <p id="distance-info"
+                        style="font-size: 14px; color: #f59e0b; margin-top: 10px; font-weight: 500; display: none;">
+                        <i class="fas fa-map-marker-alt"></i> Khoảng cách đến shop: <span id="km-display">0</span> km
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="checkout-box order-summary-section">
+                <h2><i class="fas fa-receipt"></i> Chi tiết đơn hàng</h2>
+
+                <div class="coupon-section">
+                    <label for="coupon">Áp dụng mã giảm giá:</label>
+                    <div class="coupon-input-group">
+                        <input type="text" id="coupon" placeholder="Nhập mã (Ví dụ: DIEULINH)">
+                        <button type="button" class="btn-apply" onclick="apMaGiamGia()">Áp dụng</button>
+                    </div>
+                    <p id="coupon-message" style="font-size: 13px; margin-top: 5px; font-weight: 500;"></p>
+                </div>
+
+                <hr class="divider">
+
+                <div class="price-summary">
+                    <div class="price-row">
+                        <span>Tạm tính:</span>
+                        <span><span id="subtotal">150.000</span> VND</span>
+                    </div>
+                    <div class="price-row">
+                        <span>Phí vận chuyển (<span id="shipping-rate">100</span>đ/km):</span>
+                        <span id="shipping-fee">0 VND</span>
+                    </div>
+                    <div class="price-row">
+                        <span>Giảm giá sách:</span>
+                        <span class="discount-amount">- <span id="discount">0</span> VND</span>
+                    </div>
+                    <div class="price-row total-row">
+                        <span>Tổng tiền:</span>
+                        <span class="total-price"><span id="total">150.000</span> VND</span>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-confirm-order">Xác Nhận Đặt Hàng</button>
+            </div>
+
+        </form>
+    </main>
+
+    <script>
+        // Tạo thêm biến để quản lý phần trăm giảm giá ship
+        let phanTramGiamSách = 0;
+        let phanTramGiamShip = 0;
+
+        const donGia = 150000;
+        let phiShipMoiKm = 100;
+        let soKmTinhDuoc = 0;
+        let timeoutTimKiem = null;
+
+        const SHOP_LAT = 21.028511;
+        const SHOP_LON = 105.804444;
+
+        // Hàm tính tiền đã nâng cấp để trừ được cả tiền ship
+        function tinhToanTien() {
+            let soLuongInput = document.getElementById("quantity");
+            let soLuong = parseInt(soLuongInput.value);
+            if (isNaN(soLuong) || soLuong < 1) soLuong = 1;
+
+            // 1. Tính tiền sách và tiền giảm giá sách
+            let tamTinhSách = donGia * soLuong;
+            let tienGiamSách = tamTinhSách * (phanTramGiamSách / 100);
+
+            // 2. Tính tiền ship gốc và tiền giảm giá ship
+            let tienShipGoc = Math.round(soKmTinhDuoc * phiShipMoiKm);
+            let tienGiamShip = tienShipGoc * (phanTramGiamShip / 100);
+            let tienShipSauGiam = tienShipGoc - tienGiamShip;
+
+            // 3. Tính tổng tiền cuối cùng
+            let tongTien = (tamTinhSách - tienGiamSách) + tienShipSauGiam;
+
+            // Hiển thị các con số ra giao diện
+            document.getElementById("subtotal").innerText = tamTinhSách.toLocaleString('vi-VN');
+
+            // Hiển thị phí ship kèm thông tin có được giảm hay không
+            if (phanTramGiamShip > 0) {
+                document.getElementById("shipping-fee").innerHTML =
+                    `<span style="text-decoration: line-through; color: #94a3b8; font-size: 13px;">${tienShipGoc.toLocaleString('vi-VN')}</span> ` +
+                    `<span style="color: #10b981;">0 VND (Đã giảm ${phanTramGiamShip}%)</span>`;
+            } else {
+                document.getElementById("shipping-fee").innerText = tienShipGoc.toLocaleString('vi-VN') + " VND";
+            }
+
+            document.getElementById("discount").innerText = tienGiamSách.toLocaleString('vi-VN');
+            document.getElementById("total").innerText = tongTien.toLocaleString('vi-VN');
+        }
+
+        // Hàm gọi API miễn phí lấy danh sách địa chỉ gợi ý khi khách gõ chữ
+        function timDiaChiGoiY() {
+            clearTimeout(timeoutTimKiem);
+            let tuKhoa = document.getElementById("address").value.trim();
+            let hopGoiY = document.getElementById("address-suggestions");
+
+            if (tuKhoa.length < 3) {
+                hopGoiY.style.display = "none";
+                return;
+            }
+
+            // Chờ người dùng gõ xong 0.5s mới gửi yêu cầu để không bị nghẽn mạng
+            timeoutTimKiem = setTimeout(() => {
+                fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(tuKhoa)}&countrycodes=vn&limit=5`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.length === 0) {
+                            hopGoiY.style.display = "none";
+                            return;
+                        }
+
+                        let html = '';
+                        data.forEach(place => {
+                            html += `<div class="suggestion-item" onclick="chonDiaChi('${place.display_name.replace(/'/g, "\\'")}', ${place.lat}, ${place.lon})">
+                            <i class="fas fa-map-marker-alt"></i> ${place.display_name}
+                        </div>`;
+                        });
+                        hopGoiY.innerHTML = html;
+                        hopGoiY.style.display = "block";
+                    });
+            }, 500);
+        }
+
+        // Hàm xử lý khi khách click chọn một địa chỉ từ danh sách gợi ý
+        function chonDiaChi(tenDiaChi, khachLat, khachLon) {
+            document.getElementById("address").value = tenDiaChi;
+            document.getElementById("address-suggestions").style.display = "none";
+
+            // Tính khoảng cách đường chim bay giữa Shop và Khách (Công thức Haversine toán học)
+            soKmTinhDuoc = tinhKhoangCachHaversine(SHOP_LAT, SHOP_LON, khachLat, khachLon);
+
+            // Làm tròn lấy 1 chữ số thập phân (Ví dụ: 12.3 km)
+            soKmTinhDuoc = Math.round(soKmTinhDuoc * 10) / 10;
+
+            // Hiển thị số km lên màn hình
+            document.getElementById("km-display").innerText = soKmTinhDuoc;
+            document.getElementById("distance-info").style.display = "block";
+
+            // Tính toán lại tiền hàng kèm phí ship mới
+            tinhToanTien();
+        }
+
+        // Công thức toán học tính khoảng cách giữa 2 tọa độ GPS thế giới
+        function tinhKhoangCachHaversine(lat1, lon1, lat2, lon2) {
+            const R = 6371; // Bán kính Trái Đất tính bằng km
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return R * c;
+        }
+
+        // Hàm áp mã được viết lại để nhận diện cả 2 loại mã
+        function apMaGiamGia() {
+            let maNhap = document.getElementById("coupon").value.trim().toUpperCase();
+            let thongBao = document.getElementById("coupon-message");
+
+            if (maNhap === "DIEULINH") {
+                phanTramGiamSách = 99; // Giảm tiền sách
+                thongBao.style.color = "#10b981";
+                thongBao.innerText = "🚀 Áp dụng mã DIEULINH thành công! Giảm 99% tiền sách.";
+            } else if (maNhap === "DUONGHAO") {
+                phanTramGiamSách = 50; // Giảm tiền sách
+                thongBao.style.color = "#10b981";
+                thongBao.innerText = "🚀 Áp dụng mã DUONGHAO thành công! Giảm 50% tiền sách.";
+            } else if (maNhap === "FREESHIP") {
+                if (soKmTinhDuoc === 0) {
+                    thongBao.style.color = "#f59e0b";
+                    thongBao.innerText = "⚠️ Vui lòng chọn địa chỉ giao hàng trước khi áp mã giảm ship.";
+                    return;
+                }
+                phanTramGiamShip = 100; // Miễn phí tiền ship
+                thongBao.style.color = "#10b981";
+                thongBao.innerText = "🚚 Áp dụng mã FREESHIP thành công! Bạn được miễn phí vận chuyển.";
+            } else if (maNhap === "") {
+                thongBao.style.color = "#ef4444";
+                thongBao.innerText = "Vui lòng nhập mã giảm giá.";
+            } else {
+                thongBao.style.color = "#ef4444";
+                thongBao.innerText = "Mã giảm giá không hợp lệ hoặc đã hết hạn.";
+            }
+
+            // Cập nhật lại bảng tính tiền ngay lập tức
+            tinhToanTien();
+        }
+
+        function xacNhanThanhToan(event) {
+            event.preventDefault();
+            let hoTen = document.getElementById("fullname").value;
+            let sdt = document.getElementById("phone").value;
+            let diaChi = document.getElementById("address").value;
+            let soLuong = document.getElementById("quantity").value;
+            let tongTienCuoi = document.getElementById("total").innerText;
+
+            alert(
+                `🎉 ĐẶT HÀNG THÀNH CÔNG!\n\n` +
+                `👤 Khách hàng: ${hoTen}\n` +
+                `📞 Số điện thoại: ${sdt}\n` +
+                `📍 Địa chỉ giao: ${diaChi}\n` +
+                `📏 Khoảng cách giao: ${soKmTinhDuoc} km\n` +
+                `📦 Số lượng: ${soLuong} cuốn\n` +
+                `💰 Tổng thanh toán (Đã tính ship): ${tongTienCuoi} VND\n\n` +
+                `Chân thành cảm ơn bạn đã mua sắm tại BookStore!`
+            );
+
+            localStorage.removeItem('gioHang');
+            window.location.href = "index.html";
+        }
+
+        window.onload = function () {
+            document.getElementById("unit-price").innerText = donGia.toLocaleString('vi-VN');
+            tinhToanTien();
+        };
+
+        // Đóng hộp gợi ý địa chỉ nếu khách click chuột ra ngoài khu vực ô nhập
+        document.addEventListener("click", function (e) {
+            if (e.target.id !== "address") {
+                document.getElementById("address-suggestions").style.display = "none";
+            }
+        });
+    </script>
+
+</body>
+
+</html>

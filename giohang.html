@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giỏ Hàng Của Bạn</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark-theme"> <header class="header">
+    <div class="header-container">
+        <div class="logo">BookStore</div>
+        <nav class="navbar"> 
+            <ul class="nav-list">
+                <li><a href="index.html">Trang chủ</a></li>
+                <li><a href="index.html#the-loai">Thể loại</a></li>
+                <li><a href="index.html#sach-moi">Sách mới tuyển chọn</a></li>
+                <li><a href="index.html#khuyen-mai" class="menu-sale">Khuyến mãi %</a></li>
+                <li><a href="dangnhap.html">Đăng nhập</a></li>
+                <li><a href="dangky.html" class="btn-register">Đăng ký</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<main class="cart-page-container">
+    <h2 class="page-title"><i class="fas fa-shopping-bag"></i> Giỏ hàng của bạn</h2>
+    
+    <div class="cart-layout">
+        <div class="cart-items-list" id="cart-items-container">
+            </div>
+
+        <div class="cart-summary-box">
+            <h3>Tóm tắt đơn hàng</h3>
+            <div class="summary-row">
+                <span>Tạm tính:</span>
+                <span id="cart-subtotal">0 VND</span>
+            </div>
+            <div class="summary-row total-row">
+                <span>Tổng cộng:</span>
+                <span id="cart-total">0 VND</span>
+            </div>
+            <button class="btn-checkout" onclick="tienHanhThanhToan()">Tiến Hành Thanh Toán</button>
+            <a href="index.html" class="btn-continue-shopping"><i class="fas fa-arrow-left"></i> Tiếp tục mua sắm</a>
+        </div>
+    </div>
+</main>
+
+<script>
+    // 1. Hàm lấy dữ liệu từ localStorage và hiển thị lên giao diện
+    function hienThiGiỏHang() {
+        let gioHang = JSON.parse(localStorage.getItem('gioHang')) || [];
+        let container = document.getElementById('cart-items-container');
+        
+        // Nếu giỏ hàng trống rỗng
+        if (gioHang.length === 0) {
+            container.innerHTML = `
+                <div class="empty-cart">
+                    <i class="fas fa-shopping-cart" style="font-size: 48px; color: #3b4f6f; margin-bottom: 15px;"></i>
+                    <p>Giỏ hàng của bạn đang trống.</p>
+                    <a href="index.html" class="btn-primary" style="margin-top: 15px; text-decoration:none;">Mua sách ngay</a>
+                </div>
+            `;
+            document.getElementById('cart-subtotal').innerText = "0 VND";
+            document.getElementById('cart-total').innerText = "0 VND";
+            return;
+        }
+
+        // Nếu có sách, duyệt qua từng cuốn để tạo chuỗi HTML
+        let htmlContent = '';
+        let tongTien = 0;
+
+        gioHang.forEach((item, index) => {
+            let thanhTienItem = item.gia * item.soLuong;
+            tongTien += thanhTienItem;
+
+            htmlContent += `
+                <div class="cart-item">
+                    <div class="item-img">
+                        <img src="${item.anh}" alt="${item.ten}">
+                    </div>
+                    <div class="item-details">
+                        <h4>${item.ten}</h4>
+                        <p class="item-price">${item.gia.toLocaleString('vi-VN')} VND</p>
+                    </div>
+                    <div class="item-quantity">
+                        <button onclick="thayDoiSoLuong(${index}, -1)"><i class="fas fa-minus"></i></button>
+                        <span>${item.soLuong}</span>
+                        <button onclick="thayDoiSoLuong(${index}, 1)"><i class="fas fa-plus"></i></button>
+                    </div>
+                    <div class="item-total">
+                        ${thanhTienItem.toLocaleString('vi-VN')} VND
+                    </div>
+                    <div class="item-delete">
+                        <button onclick="xoaSanPham(${index})" title="Xóa khỏi giỏ"><i class="fas fa-trash-alt"></i></button>
+                    </div>
+                </div>
+            `;
+        });
+
+        container.innerHTML = htmlContent;
+        document.getElementById('cart-subtotal').innerText = tongTien.toLocaleString('vi-VN') + " VND";
+        document.getElementById('cart-total').innerText = tongTien.toLocaleString('vi-VN') + " VND";
+    }
+
+    // 2. Hàm tăng giảm số lượng trực tiếp tại giỏ hàng
+    function thayDoiSoLuong(index, thayDoi) {
+        let gioHang = JSON.parse(localStorage.getItem('gioHang')) || [];
+        gioHang[index].soLuong += thayDoi;
+
+        // Nếu giảm xuống 0 thì tự động xóa sản phẩm đó luôn
+        if (gioHang[index].soLuong <= 0) {
+            gioHang.splice(index, 1);
+        }
+
+        localStorage.setItem('gioHang', JSON.stringify(gioHang));
+        hienThiGiỏHang();
+    }
+
+    // 3. Hàm loại bỏ sản phẩm không thích ra khỏi giỏ
+    function xoaSanPham(index) {
+        let gioHang = JSON.parse(localStorage.getItem('gioHang')) || [];
+        gioHang.splice(index, 1); // Xóa 1 phần tử tại vị trí được chọn
+        localStorage.setItem('gioHang', JSON.stringify(gioHang));
+        hienThiGiỏHang(); // Vẽ lại giao diện
+    }
+
+    // 4. Hàm điều hướng đi thanh toán đơn hàng
+    function tienHanhThanhToan() {
+        let gioHang = JSON.parse(localStorage.getItem('gioHang')) || [];
+        if (gioHang.length === 0) {
+            alert("Giỏ hàng của bạn đang trống, không thể thanh toán!");
+            return;
+        }
+        // Chuyển hướng sang trang điền mã giảm giá đã làm ở bước trước
+        window.location.href = "muangay.html";
+    }
+
+    // Tự động chạy khi mở trang
+    window.onload = hienThiGiỏHang;
+</script>
+</body>
+</html>
